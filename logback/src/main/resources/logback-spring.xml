@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 60 초마다 설정파일의 변경을 확인하여 변경시 갱신-->
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- 날짜 YYYYMMDD -->
+    <property name="DATE" value="%d{yyyyMMdd, Asia/Seoul}"/>
+    <!-- 날짜시간 년도-월-일 시:분:초 -->
+    <property name="DATETIME" value="%d{yyyy-MM-dd HH:mm:ss z, Asia/Seoul}"/>
+    <!--로그 경로 WINDOWS-->
+    <!--<property name="LOG_PATH" value="D:\\var\\log\\test\\"/>-->
+    <property name="LOG_PATH" value="D:/var/log/test"/>
+    <!-- 콘솔에 출력될 로그 패턴 -->
+    <property name="CONSOLE_PATTERN" value="[${DATETIME}] %highlight([%-5level]) [%class{0}:%line] : %msg%n" />
+
+
+    <!-- RollingFileAppender -->
+    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     	<!-- 파일경로 설정 -->
+        <file>${LOG_PATH}/access-detail.log</file>
+        <!-- Rolling 정책 (파일 관리설정) -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/access/access-detail-${DATE}.log</fileNamePattern>
+            <!--최대 보관 기간 30일 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+         <!-- 출력패턴 설정-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="DETAIL_LOGGER_ERROR" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="DETAIL_LOGGER_DEBUG" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="DETAIL_LOGGER_INFO" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="DETAIL_LOGGER_TRACE" additivity="false">
+        <level value="TRACE"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="DETAIL_LOGGER_WARN" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="console"/>
+    </root>
+
+</configuration>
